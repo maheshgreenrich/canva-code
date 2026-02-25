@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, var(--primary-action) 0%, var(--secondary-action) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card-hover { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .card-hover:hover { transform: translateY(-8px); }
+
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    .animate-float-delayed { animation: float 6s ease-in-out infinite; animation-delay: -3s; }
+
+    .stagger-1 { animation-delay: 0.1s; }
+    .stagger-2 { animation-delay: 0.2s; }
+    .stagger-3 { animation-delay: 0.3s; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+
+    .blob {
+      border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+      filter: blur(40px);
+      opacity: 0.5;
+    }
+
+    :root {
+      --background: #0a0a0f;
+      --surface: #16161d;
+      --text: #f4f4f5;
+      --primary-action: #a855f7;
+      --secondary-action: #6366f1;
+    }
+  </style>
+</head>
+
+<body class="h-full overflow-auto" style="background: var(--background); color: var(--text);">
+  <div class="w-full min-h-full relative">
+    <!-- Animated Background Blobs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+      <div class="blob absolute w-96 h-96 animate-float" style="background: var(--primary-action); top: -10%; left: -10%;"></div>
+      <div class="blob absolute w-80 h-80 animate-float-delayed" style="background: var(--secondary-action); bottom: 10%; right: -5%;"></div>
+      <div class="blob absolute w-64 h-64 animate-float" style="background: var(--primary-action); top: 40%; right: 20%; animation-delay: -2s;"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-10 px-6 py-6 md:px-12 lg:px-20">
+      <div class="flex items-center justify-between max-w-7xl mx-auto">
+        <div class="text-2xl font-bold" style="font-family: 'Playfair Display', serif;">
+          <span class="gradient-text" id="nav-name">Mahesh</span>
+        </div>
+
+        <div class="hidden md:flex items-center gap-8" style="font-family: 'Inter', sans-serif;">
+          <a href="#about" class="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity">About</a>
+          <a href="#work" class="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity">Work</a>
+          <a href="#contact" class="text-sm font-medium opacity-70 hover:opacity-100 transition-opacity">Contact</a>
+        </div>
+
+        <a href="assets/resume/Mahesh_Resume.pdf" class="px-5 py-2.5 rounded-full text-sm font-medium transition-all hover:scale-105"
+           style="background: var(--primary-action); font-family: 'Inter', sans-serif;" target="_blank" rel="noopener">
+          Download Resume
+        </a>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative z-10 px-6 md:px-12 lg:px-20 pt-16 pb-32">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+          <div class="animate-fade-in-up">
+            <p class="text-sm font-medium tracking-widest uppercase mb-4 opacity-60"
+               style="font-family: 'Inter', sans-serif; color: var(--primary-action);">
+              Welcome to my portfolio
+            </p>
+
+            <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6"
+                style="font-family: 'Playfair Display', serif;" id="hero-name">
+              K. <span class="gradient-text">Mahesh Boopathi</span>
+            </h1>
+
+            <p class="text-xl md:text-2xl font-light mb-4 opacity-80"
+               style="font-family: 'Inter', sans-serif;" id="hero-title">
+              E-commerce Executive • Digital Marketing • Marketplace Operations
+            </p>
+
+            <p class="text-base leading-relaxed mb-8 opacity-60 max-w-lg"
+               style="font-family: 'Inter', sans-serif;" id="hero-bio">
+              <!-- PASTE YOUR RESUME SUMMARY HERE -->
+              I manage e-commerce operations and digital marketing across marketplaces, focusing on growth, visibility, and performance.
+            </p>
+
+            <div class="flex flex-wrap gap-4">
+              <a href="#work" class="px-8 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-lg"
+                 style="background: var(--primary-action); font-family: 'Inter', sans-serif;">
+                View My Work
+              </a>
+
+              <a href="#about" class="px-8 py-4 rounded-full font-medium border transition-all hover:scale-105"
+                 style="border-color: var(--surface); background: var(--surface); font-family: 'Inter', sans-serif;">
+                Learn More
+              </a>
+            </div>
+          </div>
+
+          <!-- Profile Image Area -->
+          <div class="relative animate-fade-in-up stagger-2 flex justify-center lg:justify-end">
+            <div class="relative">
+              <div class="w-72 h-72 md:w-96 md:h-96 rounded-3xl overflow-hidden" style="background: var(--surface);">
+                <!-- Replace the SVG avatar with your real image -->
+                <img
+                  src="assets/img/profile.jpg"
+                  alt="Profile Photo"
+                  class="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
+
+              <!-- Floating Elements -->
+              <div class="absolute -top-4 -right-4 w-20 h-20 rounded-2xl flex items-center justify-center animate-float"
+                   style="background: var(--primary-action);">
+                <span class="text-3xl">✨</span>
+              </div>
+              <div class="absolute -bottom-4 -left-4 w-16 h-16 rounded-xl flex items-center justify-center animate-float-delayed"
+                   style="background: var(--secondary-action);">
+                <span class="text-2xl">📈</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stats (edit numbers as per your resume) -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 animate-fade-in-up stagger-3">
+          <div class="text-center p-6 rounded-2xl" style="background: var(--surface);">
+            <div class="text-4xl font-bold gradient-text" style="font-family: 'Playfair Display', serif;">2+</div>
+            <div class="text-sm opacity-60 mt-2" style="font-family: 'Inter', sans-serif;">Years Experience</div>
+          </div>
+          <div class="text-center p-6 rounded-2xl" style="background: var(--surface);">
+            <div class="text-4xl font-bold gradient-text" style="font-family: 'Playfair Display', serif;">20+</div>
+            <div class="text-sm opacity-60 mt-2" style="font-family: 'Inter', sans-serif;">Campaigns Managed</div>
+          </div>
+          <div class="text-center p-6 rounded-2xl" style="background: var(--surface);">
+            <div class="text-4xl font-bold gradient-text" style="font-family: 'Playfair Display', serif;">10+</div>
+            <div class="text-sm opacity-60 mt-2" style="font-family: 'Inter', sans-serif;">Projects</div>
+          </div>
+          <div class="text-center p-6 rounded-2xl" style="background: var(--surface);">
+            <div class="text-4xl font-bold gradient-text" style="font-family: 'Playfair Display', serif;">5+</div>
+            <div class="text-sm opacity-60 mt-2" style="font-family: 'Inter', sans-serif;">Skills Tools</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="relative z-10 px-6 md:px-12 lg:px-20 py-24" style="background: var(--surface);">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <p class="text-sm font-medium tracking-widest uppercase mb-4"
+               style="font-family: 'Inter', sans-serif; color: var(--primary-action);">
+              Get to know me
+            </p>
+
+            <h2 class="text-4xl md:text-5xl font-bold mb-6"
+                style="font-family: 'Playfair Display', serif;" id="about-heading">
+              About Me
+            </h2>
+
+            <p class="text-lg leading-relaxed opacity-70 mb-8"
+               style="font-family: 'Inter', sans-serif;" id="about-description">
+              <!-- PASTE YOUR ABOUT / SUMMARY FROM RESUME HERE -->
+              I specialize in e-commerce operations, marketplace handling, product listing optimization, SEO basics, and performance marketing support to improve sales and customer experience.
+            </p>
+
+            <!-- Replace these 4 boxes with YOUR key skills -->
+            <div class="grid grid-cols-2 gap-4">
+              <div class="p-4 rounded-xl" style="background: var(--background);">
+                <div class="text-2xl mb-2">🛒</div>
+                <div class="font-medium" style="font-family: 'Inter', sans-serif;">Marketplace Ops</div>
+              </div>
+              <div class="p-4 rounded-xl" style="background: var(--background);">
+                <div class="text-2xl mb-2">📢</div>
+                <div class="font-medium" style="font-family: 'Inter', sans-serif;">Digital Marketing</div>
+              </div>
+              <div class="p-4 rounded-xl" style="background: var(--background);">
+                <div class="text-2xl mb-2">📊</div>
+                <div class="font-medium" style="font-family: 'Inter', sans-serif;">Analytics</div>
+              </div>
+              <div class="p-4 rounded-xl" style="background: var(--background);">
+                <div class="text-2xl mb-2">🧰</div>
+                <div class="font-medium" style="font-family: 'Inter', sans-serif;">Tools (Odoo, Ads)</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- About image -->
+          <div class="relative">
+            <div class="w-full aspect-square rounded-3xl overflow-hidden" style="background: var(--background);">
+              <img
+                src="assets/img/project1.jpg"
+                alt="Work preview"
+                class="w-full h-full object-cover opacity-90"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Work Section -->
+    <section id="work" class="relative z-10 px-6 md:px-12 lg:px-20 py-24">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <p class="text-sm font-medium tracking-widest uppercase mb-4"
+             style="font-family: 'Inter', sans-serif; color: var(--primary-action);">
+            My Portfolio
+          </p>
+          <h2 class="text-4xl md:text-5xl font-bold"
+              style="font-family: 'Playfair Display', serif;" id="work-heading">
+            Featured Work
+          </h2>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Project Card 1 -->
+          <a class="card-hover group cursor-pointer" href="https://example.com" target="_blank" rel="noopener">
+            <div class="rounded-2xl overflow-hidden" style="background: var(--surface);">
+              <div class="aspect-video relative overflow-hidden">
+                <img src="assets/img/project1.jpg" alt="Project 1" class="w-full h-full object-cover" loading="lazy" />
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-6 py-2 rounded-full text-sm font-medium"
+                        style="background: var(--primary-action); font-family: 'Inter', sans-serif;">
+                    View Project
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2" style="font-family: 'Playfair Display', serif;">Project Title 1</h3>
+                <p class="text-sm opacity-60" style="font-family: 'Inter', sans-serif;">E-commerce • Marketing</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project Card 2 -->
+          <a class="card-hover group cursor-pointer" href="https://example.com" target="_blank" rel="noopener">
+            <div class="rounded-2xl overflow-hidden" style="background: var(--surface);">
+              <div class="aspect-video relative overflow-hidden">
+                <img src="assets/img/project2.jpg" alt="Project 2" class="w-full h-full object-cover" loading="lazy" />
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-6 py-2 rounded-full text-sm font-medium"
+                        style="background: var(--primary-action); font-family: 'Inter', sans-serif;">
+                    View Project
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2" style="font-family: 'Playfair Display', serif;">Project Title 2</h3>
+                <p class="text-sm opacity-60" style="font-family: 'Inter', sans-serif;">SEO • Listings</p>
+              </div>
+            </div>
+          </a>
+
+          <!-- Project Card 3 -->
+          <a class="card-hover group cursor-pointer" href="https://example.com" target="_blank" rel="noopener">
+            <div class="rounded-2xl overflow-hidden" style="background: var(--surface);">
+              <div class="aspect-video relative overflow-hidden">
+                <img src="assets/img/project3.jpg" alt="Project 3" class="w-full h-full object-cover" loading="lazy" />
+                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <span class="px-6 py-2 rounded-full text-sm font-medium"
+                        style="background: var(--primary-action); font-family: 'Inter', sans-serif;">
+                    View Project
+                  </span>
+                </div>
+              </div>
+              <div class="p-6">
+                <h3 class="text-xl font-semibold mb-2" style="font-family: 'Playfair Display', serif;">Project Title 3</h3>
+                <p class="text-sm opacity-60" style="font-family: 'Inter', sans-serif;">Ads • Performance</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="relative z-10 px-6 md:px-12 lg:px-20 py-24" style="background: var(--surface);">
+      <div class="max-w-4xl mx-auto text-center">
+        <p class="text-sm font-medium tracking-widest uppercase mb-4"
+           style="font-family: 'Inter', sans-serif; color: var(--primary-action);">
+          Let's Connect
+        </p>
+
+        <h2 class="text-4xl md:text-6xl font-bold mb-6"
+            style="font-family: 'Playfair Display', serif;" id="contact-heading">
+          Get In Touch
+        </h2>
+
+        <p class="text-lg opacity-70 mb-12 max-w-2xl mx-auto"
+           style="font-family: 'Inter', sans-serif;" id="contact-description">
+          <!-- Put your contact line -->
+          Open to roles in E-commerce / Marketplace / Digital Marketing. Reach out for opportunities.
+        </p>
+
+        <!-- NOTE: This form only shows success message (no email is sent). -->
+        <form class="max-w-xl mx-auto"
+              onsubmit="event.preventDefault(); document.getElementById('success-message').classList.remove('hidden'); this.reset();">
+          <div class="grid md:grid-cols-2 gap-4 mb-4">
+            <input type="text" placeholder="Your Name" required
+                   class="w-full px-6 py-4 rounded-xl border-none outline-none focus:ring-2 transition-all"
+                   style="background: var(--background); font-family: 'Inter', sans-serif; --tw-ring-color: var(--primary-action);" />
+            <input type="email" placeholder="Your Email" required
+                   class="w-full px-6 py-4 rounded-xl border-none outline-none focus:ring-2 transition-all"
+                   style="background: var(--background); font-family: 'Inter', sans-serif; --tw-ring-color: var(--primary-action);" />
+          </div>
+
+          <textarea placeholder="Your Message" rows="5" required
+                    class="w-full px-6 py-4 rounded-xl border-none outline-none focus:ring-2 transition-all resize-none mb-6"
+                    style="background: var(--background); font-family: 'Inter', sans-serif; --tw-ring-color: var(--primary-action);"></textarea>
+
+          <button type="submit"
+                  class="w-full md:w-auto px-12 py-4 rounded-full font-medium transition-all hover:scale-105 hover:shadow-xl"
+                  style="background: var(--primary-action); font-family: 'Inter', sans-serif;">
+            Send Message
+          </button>
+        </form>
+
+        <div id="success-message" class="hidden mt-6 p-4 rounded-xl" style="background: var(--background);">
+          <p class="text-lg" style="color: var(--primary-action); font-family: 'Inter', sans-serif;">
+            ✨ Thanks for reaching out! I'll get back to you soon.
+          </p>
+        </div>
+
+        <!-- Social Links (replace # with real links) -->
+        <div class="flex justify-center gap-6 mt-16" style="font-family: 'Inter', sans-serif;">
+          <a href="mailto:yourmail@example.com" class="px-6 py-3 rounded-full" style="background: var(--background);">Email</a>
+          <a href="https://www.linkedin.com/in/yourprofile" target="_blank" rel="noopener" class="px-6 py-3 rounded-full" style="background: var(--background);">LinkedIn</a>
+          <a href="https://github.com/yourusername" target="_blank" rel="noopener" class="px-6 py-3 rounded-full" style="background: var(--background);">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="relative z-10 px-6 md:px-12 lg:px-20 py-8 text-center" style="background: var(--background);">
+      <p class="text-sm opacity-50" style="font-family: 'Inter', sans-serif;">
+        © 2026 <span id="footer-name">K. Mahesh Boopathi</span>. Crafted with ❤️
+      </p>
+    </footer>
+  </div>
+</body>
+</html>
