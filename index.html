@@ -478,6 +478,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Experience Timeline (Focus Scroll)</title>
+
   <style>
     :root{
       --bg: #0b0f16;
@@ -501,6 +502,7 @@
 
     * { box-sizing: border-box; }
     html, body { height: 100%; }
+
     body{
       margin: 0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -518,10 +520,14 @@
       place-items: center;
       text-align: center;
     }
+    /* ✅ Title white + bold */
     header h1{
       margin: 0;
       font-size: clamp(22px, 3vw, 34px);
       letter-spacing: -0.02em;
+      font-weight: 900;
+      color: #ffffff;
+      text-shadow: 0 10px 40px rgba(0,0,0,.35);
     }
     header p{
       margin: 10px 0 0;
@@ -537,7 +543,6 @@
       padding: 10px 0 60px;
     }
 
-    /* timeline grid */
     .timeline{
       position: relative;
       display: grid;
@@ -545,7 +550,6 @@
       gap: 26px;
     }
 
-    /* base line */
     .timeline::before{
       content:"";
       position: absolute;
@@ -560,7 +564,6 @@
 
     .t-item{ display: contents; }
 
-    /* left column: dot */
     .node{
       grid-column: 1;
       position: relative;
@@ -588,7 +591,6 @@
       transform: scale(1.1);
     }
 
-    /* card */
     .card{
       grid-column: 2;
       background: var(--card);
@@ -599,7 +601,6 @@
       overflow: hidden;
       padding: 18px 18px 16px;
 
-      /* for “focus” animation */
       opacity: var(--inactiveOpacity);
       transform: translateY(8px) scale(.985);
       filter: blur(2px);
@@ -616,7 +617,6 @@
       pointer-events: none;
     }
 
-    /* connector to timeline */
     .connector{
       position: absolute;
       left: -18px;
@@ -638,7 +638,6 @@
       border: 2px solid rgba(255,255,255,.30);
     }
 
-    /* active + peek states */
     .card.is-active{
       opacity: var(--activeOpacity);
       transform: translateY(0) scale(1);
@@ -650,7 +649,6 @@
       filter: blur(0);
     }
 
-    /* content */
     .head{
       display: flex;
       align-items: flex-start;
@@ -706,7 +704,6 @@
       z-index: 1;
     }
 
-    /* expandable details */
     details{
       margin-top: 10px;
       position: relative;
@@ -730,7 +727,6 @@
       transition: transform .2s ease, background .2s ease;
     }
     summary::-webkit-details-marker{ display: none; }
-
     summary:hover{ background: rgba(17,24,39,.09); transform: translateY(-1px); }
 
     .chev{
@@ -753,19 +749,43 @@
       line-height: 1.6;
       font-size: 14px;
     }
-    .detail-box ul{ margin: 8px 0 0 18px; }
+
+    .detail-section-title{
+      margin: 10px 0 6px;
+      font-size: 14px;
+      font-weight: 900;
+      color: rgba(17,24,39,.90);
+    }
+    .detail-box ul{ margin: 8px 0 0 18px; padding: 0; }
     .detail-box li{ margin: 6px 0; }
 
-    /* --- Mobile: revert to normal reveal (cards just appear normally) --- */
+    /* ✅ Mobile layout + make sure focus mode never breaks */
     @media (max-width: 680px){
-      .timeline{ grid-template-columns: 56px 1fr; gap: 16px; }
-      :root{ --lineX: 28px; }
-      .node{ min-height: 190px; padding-top: 22px; }
-      .dot{ top: 110px; }
-      .connector{ left: -12px; width: 12px; }
+      .timeline{ grid-template-columns: 44px 1fr; gap: 14px; }
+      :root{ --lineX: 22px; }
 
-      /* on mobile: don’t force opacity focus; show cards readable */
-      .card{ opacity: 1; transform: none; filter: none; }
+      .wrap{ width: min(980px, 94vw); }
+
+      .node{ min-height: 180px; padding-top: 18px; }
+      .dot{ top: 96px; }
+
+      .connector{ left: -10px; width: 10px; }
+
+      /* Force cards fully readable on mobile even if classes exist */
+      .card,
+      .card.is-active,
+      .card.is-peek{
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+
+      /* Make header row wrap nicely */
+      .head{ flex-direction: column; gap: 10px; }
+      .range{ align-self: flex-start; }
+
+      .company{ font-size: 16px; }
+      .role{ font-size: 12px; }
     }
 
     @media (prefers-reduced-motion: reduce){
@@ -774,6 +794,7 @@
     }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Professional Experience</h1>
@@ -794,7 +815,7 @@
 
           <div class="head">
             <div>
-              <h2 class="company">GREENRICH ENVIRO SOLUTIONS PVT. LTD. </h2>
+              <h2 class="company">GREENRICH ENVIRO SOLUTIONS PVT. LTD.</h2>
               <div class="role">DIGITAL MARKETING EXECUTIVE</div>
             </div>
             <div class="range">SEP 2024 - PRESENT</div>
@@ -803,75 +824,53 @@
           <div class="divider"></div>
 
           <p class="summary">
-            Delivered Meta Ads (Facebook & Instagram) campaigns
-focused on lead generation and traffic, supporting monthly
-marketing objectives.
+            Delivered Meta Ads (Facebook & Instagram) campaigns focused on lead generation and traffic, supporting monthly marketing objectives.
           </p>
 
           <details>
             <summary>
               View more <span class="chev" aria-hidden="true"></span>
             </summary>
+
             <div class="detail-box">
               <div><strong>What I do:</strong></div>
+
+              <div class="detail-section-title">E-Commerce Operations & Marketplace Management</div>
               <ul>
-                <h4>E-Commerce Operations & Marketplace Management<h4></h1>
-<li>Executed end-to-end seller operations across Amazon,
-Flipkart, Meesho and JioMart covering product listing,
-catalog optimization, pricing strategy, and order fulfillment.
-Improved product visibility and conversion rates by optimizing
-A+ content, brand store layouts, comparison tables, and
-product images.
-Launched festival campaigns, coupons, lightning deals, and
-promotional offers, ensuring alignment with seasonal sales
-strategies.
-Reviewed seller performance metrics, customer feedback,
-and marketplace compliance to maintain consistent seller
-ratings and customer satisfaction.
-Prepared weekly and monthly sales performance reports,
-covering revenue trends, ad spend, and ROI for management
-review.                                                                  
-</li>
-<h4>Digital Marketing & Social Media<h4></h1>
-                <li>Delivered Meta Ads (Facebook & Instagram) campaigns
-focused on lead generation and traffic, supporting monthly
-marketing objectives.
-Published daily posts, reels, and promotional creatives across
-brand social media accounts, increasing inbound inquiries
-and engagement.
-Analyzed ad performance using A/B testing and audience
-insights to optimize targeting and cost efficiency.
-Handled Pages</li>
-<h4>Email, WhatsApp & Website Management<h4></h1>
-                <li>Ran email marketing campaigns Through Odoo CRM,
-including customer segmentation, promotional messaging,
-and  scheduled follow-ups.
-Executed WhatsApp marketing campaigns via AISENZY to
-promote offers and product updates, contributing to repeat
-customer engagement.
-Developed WordPress corporate and e-commerce websites,
-integrating payment gateways, lead capture forms,
-WhatsApp chat, and SEO best practices.
-Implemented on-page SEO, technical SEO, and page speed
-optimization, improving website visibility and search
-rankings.</li>
-<h4> Lead Generation & CRM Operations<h4></h1>
-                <li>Generated and nurtured B2B leads through INDIAMART and
-TradeIndia, handling cold calls, quotations, follow-ups, and
-structured follow-ups.
-Updated and tracked 100% of leads in CRM systems and
-monitored sales pipelines and performed lead-to-conversion
-analysis to improve follow-up accuracy.
-Implemented automated follow-up workflows in CRM,
-reducing average response time and improving lead
-engagement.</li>
-<h4> Team & Operations Management<h4></h1>
-                <li>Supervised daily operational tasks within marketing and sales
-support teams to ensure timely execution of campaigns.
-Coordinated with logistics teams for inventory planning, order
-tracking, and delivery coordination.
-Supported pricing analysis, sales forecasting, and operational
-reporting for management review.</li>
+                <li>Executed end-to-end seller operations across Amazon, Flipkart, Meesho and JioMart covering listing, catalog optimization, pricing, and fulfillment.</li>
+                <li>Improved product visibility by optimizing A+ content, brand store layouts, comparison tables, and product images.</li>
+                <li>Launched festival campaigns, coupons, lightning deals, and promotional offers aligned with seasonal sales strategies.</li>
+                <li>Reviewed seller performance metrics, customer feedback, and compliance to maintain seller ratings and satisfaction.</li>
+                <li>Prepared weekly/monthly reports covering revenue trends, ad spend, and ROI for management review.</li>
+              </ul>
+
+              <div class="detail-section-title">Digital Marketing & Social Media</div>
+              <ul>
+                <li>Delivered Meta Ads campaigns focused on lead generation and traffic.</li>
+                <li>Published daily posts/reels/creatives to increase inbound inquiries and engagement.</li>
+                <li>Used A/B testing and audience insights to optimize targeting and cost efficiency.</li>
+              </ul>
+
+              <div class="detail-section-title">Email, WhatsApp & Website Management</div>
+              <ul>
+                <li>Ran email marketing campaigns via Odoo CRM (segmentation, promos, scheduled follow-ups).</li>
+                <li>Executed WhatsApp marketing via AISENZY to promote offers and updates.</li>
+                <li>Developed WordPress corporate and e-commerce websites with payment, lead forms, WhatsApp chat, and SEO.</li>
+                <li>Implemented on-page/technical SEO and page speed optimization.</li>
+              </ul>
+
+              <div class="detail-section-title">Lead Generation & CRM Operations</div>
+              <ul>
+                <li>Generated and nurtured B2B leads via IndiaMART and TradeIndia (calls, quotations, follow-ups).</li>
+                <li>Tracked leads in CRM and monitored pipelines; performed lead-to-conversion analysis.</li>
+                <li>Implemented automated follow-up workflows to reduce response time and improve engagement.</li>
+              </ul>
+
+              <div class="detail-section-title">Team & Operations Management</div>
+              <ul>
+                <li>Supervised daily operational tasks to ensure timely execution of campaigns.</li>
+                <li>Coordinated with logistics for inventory planning, order tracking, and delivery coordination.</li>
+                <li>Supported pricing analysis, sales forecasting, and operational reporting.</li>
               </ul>
             </div>
           </details>
@@ -890,14 +889,13 @@ reporting for management review.</li>
               <h2 class="company">CAFS INFOTECH PVT. LTD</h2>
               <div class="role">CUSTOMER RELATIONSHIP EXECUTIVE</div>
             </div>
-            <div class="range"> MAR 2024 – SEP 2024</div>
+            <div class="range">MAR 2024 – SEP 2024</div>
           </div>
 
           <div class="divider"></div>
 
           <p class="summary">
-            Handled customer interactions, service inquiries, and
-escalations, ensuring high satisfaction and retention.
+            Handled customer interactions, service inquiries, and escalations, ensuring high satisfaction and retention.
           </p>
 
           <details>
@@ -906,16 +904,10 @@ escalations, ensuring high satisfaction and retention.
             </summary>
             <div class="detail-box">
               <ul>
-                <li>Handled customer interactions, service inquiries, and
-escalations, ensuring high satisfaction and retention.</li>
-                <li>Provided pre-sales and post-sales support, guiding customers
-through products and services.</li>
-                <li>Updated CRM systems, tracked customer engagement, and
-prepared service and sales reports.</li>
-<li>Coordinated with sales, operations, and accounts teams to
-resolve order, billing, and payment issues.</li>
-<li>Collected and analyzed customer feedback to identify service
-improvement opportunities</li>
+                <li>Provided pre-sales and post-sales support, guiding customers through products and services.</li>
+                <li>Updated CRM systems, tracked engagement, and prepared service/sales reports.</li>
+                <li>Coordinated with sales, operations, and accounts teams to resolve order, billing, and payment issues.</li>
+                <li>Collected and analyzed customer feedback to identify service improvement opportunities.</li>
               </ul>
             </div>
           </details>
@@ -934,14 +926,13 @@ improvement opportunities</li>
               <h2 class="company">EUREKA FORBES PVT. LTD</h2>
               <div class="role">CUSTOMER SUPPORT ENGINEER</div>
             </div>
-            <div class="range"> NOV 2021 – SEP 2023</div>
+            <div class="range">NOV 2021 – SEP 2023</div>
           </div>
 
           <div class="divider"></div>
 
           <p class="summary">
-            Delivered on-site and remote technical support, including
-troubleshooting, installation, and preventive maintenance
+            Delivered on-site and remote technical support including troubleshooting, installation, and preventive maintenance.
           </p>
 
           <details>
@@ -950,22 +941,16 @@ troubleshooting, installation, and preventive maintenance
             </summary>
             <div class="detail-box">
               <ul>
-                <li>Delivered on-site and remote technical support, including
-troubleshooting, installation, and preventive maintenance</li>
-                <li>Diagnosed hardware and system-level issues, ensuring
-equipment reliability and performance.</li>
+                <li>Diagnosed hardware and system-level issues ensuring reliability and performance.</li>
                 <li>Conducted customer training and product demonstrations.</li>
-                <li>Maintained service records, technical reports, and CRM
-updates.</li>
-                <li>Collaborated with engineering teams to escalate complex
-issues and improve product quality.</li>
+                <li>Maintained service records, technical reports, and CRM updates.</li>
+                <li>Collaborated with engineering teams to escalate complex issues and improve product quality.</li>
               </ul>
             </div>
           </details>
         </div>
       </article>
 
-      <!-- add more items the same way -->
     </section>
   </main>
 
@@ -977,7 +962,7 @@ issues and improve product quality.</li>
       return window.matchMedia("(min-width: 681px)").matches;
     }
 
-    // Close other "View more" when opening one (optional)
+    // Optional: close other "View more" when opening one
     document.querySelectorAll("details").forEach(d => {
       d.addEventListener("toggle", () => {
         if (d.open) {
@@ -988,10 +973,20 @@ issues and improve product quality.</li>
       });
     });
 
-    function applyFocusMode(){
-      if (!isDesktop()) return;
+    function clearFocusMode(){
+      // ✅ remove focus classes so mobile always looks correct
+      cards.forEach(card => {
+        card.classList.remove("is-active", "is-peek");
+      });
+      nodes.forEach(n => n.classList.remove("is-active"));
+    }
 
-      // Find the card closest to the center; that becomes active.
+    function applyFocusMode(){
+      if (!isDesktop()){
+        clearFocusMode();
+        return;
+      }
+
       const center = window.innerHeight * 0.45;
       let activeIndex = 0;
       let bestDist = Infinity;
@@ -1003,7 +998,6 @@ issues and improve product quality.</li>
         if (dist < bestDist) { bestDist = dist; activeIndex = i; }
       });
 
-      // Mark active, peek (next), and fade others
       cards.forEach((card, i) => {
         card.classList.toggle("is-active", i === activeIndex);
         card.classList.toggle("is-peek", i === activeIndex + 1);
@@ -1016,13 +1010,14 @@ issues and improve product quality.</li>
       window.requestAnimationFrame(applyFocusMode);
     }
 
-    // initial + events
     applyFocusMode();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", applyFocusMode);
 
-    // If you want the “peek” to always be visible (even when cards are short),
-    // you can add spacing between items by padding on .node min-height or adding margins.
+    // ✅ helps on mobile rotation / safari weird resize
+    window.addEventListener("orientationchange", () => {
+      setTimeout(applyFocusMode, 120);
+    });
   </script>
 </body>
 </html>
