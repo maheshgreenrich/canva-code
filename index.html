@@ -1019,6 +1019,490 @@
   </script>
 </body>
 </html>
+    <!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Experience Timeline (Focus Scroll)</title>
+  <style>
+    :root{
+      --bg: #0b0f16;
+      --card: rgba(255,255,255,.92);
+      --text: #111827;
+      --muted: #6b7280;
+
+      --line: rgba(255,255,255,.18);
+      --accent: #3b82f6;
+
+      --shadow: 0 18px 45px rgba(0,0,0,.35);
+      --radius: 16px;
+
+      --containerW: min(980px, 92vw);
+      --lineX: 40px;
+
+      --activeOpacity: 1;
+      --peekOpacity: .55;
+      --inactiveOpacity: .15;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: #e5e7eb;
+      background:
+        radial-gradient(1200px 500px at 60% 35%, rgba(59,130,246,.18), transparent 55%),
+        radial-gradient(900px 450px at 20% 65%, rgba(168,85,247,.14), transparent 60%),
+        linear-gradient(180deg, #05070c 0%, var(--bg) 60%, #060913 100%);
+      overflow-x: hidden;
+    }
+
+    header{
+      padding: 42px 18px 10px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+    }
+    header h1{
+      margin: 0;
+      font-size: clamp(22px, 3vw, 34px);
+      letter-spacing: -0.02em;
+    }
+    header p{
+      margin: 10px 0 0;
+      color: rgba(229,231,235,.75);
+      max-width: 70ch;
+      line-height: 1.5;
+    }
+
+    .wrap{
+      width: var(--containerW);
+      margin: 16px auto 90px;
+      position: relative;
+      padding: 10px 0 60px;
+    }
+
+    /* timeline grid */
+    .timeline{
+      position: relative;
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 26px;
+    }
+
+    /* base line */
+    .timeline::before{
+      content:"";
+      position: absolute;
+      left: var(--lineX);
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent 0%, var(--line) 10%, var(--line) 90%, transparent 100%);
+      border-radius: 999px;
+      pointer-events: none;
+    }
+
+    .t-item{ display: contents; }
+
+    /* left column: dot */
+    .node{
+      grid-column: 1;
+      position: relative;
+      min-height: 220px;
+      display: flex;
+      justify-content: center;
+      padding-top: 28px;
+    }
+
+    .dot{
+      width: 14px;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.20);
+      border: 2px solid rgba(255,255,255,.35);
+      position: sticky;
+      top: 140px;
+      transition: transform .25s ease, background .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+
+    .node.is-active .dot{
+      background: rgba(59,130,246,.95);
+      border-color: rgba(255,255,255,.85);
+      box-shadow: 0 0 0 6px rgba(59,130,246,.20), 0 14px 35px rgba(59,130,246,.25);
+      transform: scale(1.1);
+    }
+
+    /* card */
+    .card{
+      grid-column: 2;
+      background: var(--card);
+      color: var(--text);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+      padding: 18px 18px 16px;
+
+      /* for “focus” animation */
+      opacity: var(--inactiveOpacity);
+      transform: translateY(8px) scale(.985);
+      filter: blur(2px);
+      transition: opacity .35s ease, transform .35s ease, filter .35s ease;
+      will-change: opacity, transform, filter;
+    }
+
+    .card::before{
+      content:"";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(59,130,246,.10), transparent 40%),
+                  linear-gradient(0deg, rgba(0,0,0,.06), transparent 40%);
+      pointer-events: none;
+    }
+
+    /* connector to timeline */
+    .connector{
+      position: absolute;
+      left: -18px;
+      top: 38px;
+      width: 18px;
+      height: 2px;
+      background: rgba(255,255,255,.25);
+    }
+    .connector::after{
+      content:"";
+      position: absolute;
+      left: -6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.25);
+      border: 2px solid rgba(255,255,255,.30);
+    }
+
+    /* active + peek states */
+    .card.is-active{
+      opacity: var(--activeOpacity);
+      transform: translateY(0) scale(1);
+      filter: blur(0);
+    }
+    .card.is-peek{
+      opacity: var(--peekOpacity);
+      transform: translateY(2px) scale(.995);
+      filter: blur(0);
+    }
+
+    /* content */
+    .head{
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .company{
+      margin: 0;
+      font-size: 18px;
+      font-weight: 850;
+      letter-spacing: -0.01em;
+    }
+    .role{
+      margin: 6px 0 0;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    .range{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 850;
+      color: #2563eb;
+      background: rgba(37,99,235,.10);
+      border: 1px solid rgba(37,99,235,.18);
+      white-space: nowrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider{
+      height: 1px;
+      background: rgba(17,24,39,.12);
+      margin: 12px 0 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .summary{
+      margin: 0;
+      color: rgba(17,24,39,.80);
+      line-height: 1.55;
+      font-size: 14px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* expandable details */
+    details{
+      margin-top: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    summary{
+      list-style: none;
+      cursor: pointer;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 850;
+      font-size: 13px;
+      color: #111827;
+      background: rgba(17,24,39,.06);
+      border: 1px solid rgba(17,24,39,.10);
+      transition: transform .2s ease, background .2s ease;
+    }
+    summary::-webkit-details-marker{ display: none; }
+
+    summary:hover{ background: rgba(17,24,39,.09); transform: translateY(-1px); }
+
+    .chev{
+      width: 10px; height: 10px;
+      border-right: 2px solid currentColor;
+      border-bottom: 2px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform .2s ease;
+      margin-left: 2px;
+    }
+    details[open] .chev{ transform: rotate(225deg); }
+
+    .detail-box{
+      margin-top: 10px;
+      padding: 12px 12px;
+      border-radius: 12px;
+      background: rgba(17,24,39,.04);
+      border: 1px solid rgba(17,24,39,.10);
+      color: rgba(17,24,39,.82);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    .detail-box ul{ margin: 8px 0 0 18px; }
+    .detail-box li{ margin: 6px 0; }
+
+    /* --- Mobile: revert to normal reveal (cards just appear normally) --- */
+    @media (max-width: 680px){
+      .timeline{ grid-template-columns: 56px 1fr; gap: 16px; }
+      :root{ --lineX: 28px; }
+      .node{ min-height: 190px; padding-top: 22px; }
+      .dot{ top: 110px; }
+      .connector{ left: -12px; width: 12px; }
+
+      /* on mobile: don’t force opacity focus; show cards readable */
+      .card{ opacity: 1; transform: none; filter: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .card{ transition: none; transform: none; filter: none; }
+      .dot{ transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Experience Timeline</h1>
+    <p>
+      Desktop: one card is active; next card peeks at the bottom with half opacity.
+      Scroll to activate the next one. Mobile stays simple and readable.
+    </p>
+  </header>
+
+  <main class="wrap">
+    <section class="timeline" id="timeline">
+
+      <!-- EXPERIENCE 1 -->
+      <article class="t-item">
+        <div class="node"><div class="dot" aria-hidden="true"></div></div>
+
+        <div class="card">
+          <span class="connector" aria-hidden="true"></span>
+
+          <div class="head">
+            <div>
+              <h2 class="company">Company A</h2>
+              <div class="role">Frontend Developer</div>
+            </div>
+            <div class="range">Jan 2024 — Present</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="summary">
+            Building responsive UI components, improving page performance, and collaborating with design & backend.
+          </p>
+
+          <details>
+            <summary>
+              View more <span class="chev" aria-hidden="true"></span>
+            </summary>
+            <div class="detail-box">
+              <div><strong>What I do:</strong></div>
+              <ul>
+                <li>Developed reusable components (HTML/CSS/JS), ensuring accessibility and clean UI.</li>
+                <li>Optimized rendering and reduced layout shift across key pages.</li>
+                <li>Integrated APIs and improved loading states, error handling, and UX consistency.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- EXPERIENCE 2 -->
+      <article class="t-item">
+        <div class="node"><div class="dot" aria-hidden="true"></div></div>
+
+        <div class="card">
+          <span class="connector" aria-hidden="true"></span>
+
+          <div class="head">
+            <div>
+              <h2 class="company">Company B</h2>
+              <div class="role">Web Developer</div>
+            </div>
+            <div class="range">Jun 2023 — Dec 2023</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="summary">
+            Delivered marketing pages, implemented animations, and maintained cross-browser compatibility.
+          </p>
+
+          <details>
+            <summary>
+              View more <span class="chev" aria-hidden="true"></span>
+            </summary>
+            <div class="detail-box">
+              <ul>
+                <li>Created landing pages with SEO-friendly structure and optimized assets.</li>
+                <li>Built interactive UI sections (scroll reveal, counters, sliders) without heavy libraries.</li>
+                <li>Worked closely with designers to match spacing/typography precisely.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- EXPERIENCE 3 -->
+      <article class="t-item">
+        <div class="node"><div class="dot" aria-hidden="true"></div></div>
+
+        <div class="card">
+          <span class="connector" aria-hidden="true"></span>
+
+          <div class="head">
+            <div>
+              <h2 class="company">Company C</h2>
+              <div class="role">Intern / Junior Developer</div>
+            </div>
+            <div class="range">Jan 2023 — May 2023</div>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="summary">
+            Assisted in building internal tools, fixing UI bugs, and learning production workflows.
+          </p>
+
+          <details>
+            <summary>
+              View more <span class="chev" aria-hidden="true"></span>
+            </summary>
+            <div class="detail-box">
+              <ul>
+                <li>Fixed UI issues and improved form validation for better user feedback.</li>
+                <li>Helped document components and updated style guides.</li>
+                <li>Supported QA with test cases and reproduction steps.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </article>
+
+      <!-- add more items the same way -->
+    </section>
+  </main>
+
+  <script>
+    const cards = Array.from(document.querySelectorAll(".card"));
+    const nodes = Array.from(document.querySelectorAll(".node"));
+
+    function isDesktop(){
+      return window.matchMedia("(min-width: 681px)").matches;
+    }
+
+    // Close other "View more" when opening one (optional)
+    document.querySelectorAll("details").forEach(d => {
+      d.addEventListener("toggle", () => {
+        if (d.open) {
+          document.querySelectorAll("details").forEach(other => {
+            if (other !== d) other.open = false;
+          });
+        }
+      });
+    });
+
+    function applyFocusMode(){
+      if (!isDesktop()) return;
+
+      // Find the card closest to the center; that becomes active.
+      const center = window.innerHeight * 0.45;
+      let activeIndex = 0;
+      let bestDist = Infinity;
+
+      cards.forEach((card, i) => {
+        const r = card.getBoundingClientRect();
+        const cardCenter = r.top + r.height / 2;
+        const dist = Math.abs(cardCenter - center);
+        if (dist < bestDist) { bestDist = dist; activeIndex = i; }
+      });
+
+      // Mark active, peek (next), and fade others
+      cards.forEach((card, i) => {
+        card.classList.toggle("is-active", i === activeIndex);
+        card.classList.toggle("is-peek", i === activeIndex + 1);
+      });
+
+      nodes.forEach((n, i) => n.classList.toggle("is-active", i === activeIndex));
+    }
+
+    function onScroll(){
+      window.requestAnimationFrame(applyFocusMode);
+    }
+
+    // initial + events
+    applyFocusMode();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", applyFocusMode);
+
+    // If you want the “peek” to always be visible (even when cards are short),
+    // you can add spacing between items by padding on .node min-height or adding margins.
+  </script>
+</body>
+</html>
     <!-- Contact Section -->
     <section id="contact" class="relative z-10 px-6 md:px-12 lg:px-20 py-24" style="background: var(--surface);">
       <div class="max-w-4xl mx-auto text-center">
